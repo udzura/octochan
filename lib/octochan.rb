@@ -23,8 +23,8 @@ module Octochan
     end
 
     get '/status' do
-      res = settings.octokit.issues "udzura/octochan"
-      res.map(&:to_h).to_json
+      res = settings.octokit.github_status.to_h
+      res.to_json
     end
 
     get '/version' do
