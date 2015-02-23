@@ -37,6 +37,7 @@ module Octochan
       else
         body = params['body']
       end
+      body = body.force_encoding('utf-8')
 
       begin
         res = settings.octokit.add_comment("#{params[:owner]}/#{params[:repo]}", params[:num], body)
