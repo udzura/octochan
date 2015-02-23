@@ -14,7 +14,6 @@ module Octochan
       }
     end
 
-
     before do
       content_type "application/json"
     end
@@ -30,6 +29,29 @@ module Octochan
 
     get '/version' do
       {version: VERSION}.to_json
+    end
+
+    post '/:owner/:repo/:num/comments' do
+      if request.content_type =~ %r|multipart/form-data|
+        body = params['body'][:tempfile].read
+      else
+        body = params['body']
+      end
+
+      begin
+        res = settings.octokit.add_comment("#{params[:owner]}/#{params[:repo]}", params[:num], body)
+        {
+          status: 'OK',
+          url: res.html_url
+        }.to_json
+      rescue => e
+        status_code 422
+        {
+          status: 'NG',
+          error: e.class.to_s,
+          error_message: e.message
+        }.to_json
+      end
     end
   end
 end
