@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby -*-
+
+require 'octochan'
+require 'optparse'
+
+options = ARGV.getopts("", "api_root:", "token:")
+
+Octochan::App.configure do
+  Octochan::App.set :access_token, options["token"]
+  Octochan::App.set :api_root,     options["api_root"] if options["api_root"]
+end
+
+Octochan::App.run!
