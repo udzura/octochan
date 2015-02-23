@@ -45,6 +45,7 @@ module Octochan
           url: res.html_url
         }.to_json
       rescue => e
+        puts e, e.message, e.backtrace
         status_code 422
         {
           status: 'NG',
